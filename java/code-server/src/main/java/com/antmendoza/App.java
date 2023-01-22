@@ -1,13 +1,16 @@
 package com.antmendoza;
 
-import com.google.common.net.HttpHeaders;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import io.temporal.api.common.v1.Payload;
 import io.temporal.api.common.v1.Payloads;
 
-import java.io.*;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class App {
                 try (InputStreamReader ioReader = new InputStreamReader(exchange.getRequestBody())) {
                     AbstractRemoteDataEncoderCodec.JSON_FORMAT.merge(ioReader, incomingPayloads);
                 } catch (IOException e) {
-//                    exchange.sendResponseHeaders(HttpServletResponse.SC_BAD_REQUEST, -1);
+                    exchange.sendResponseHeaders(HttpServletResponse.SC_BAD_REQUEST, -1);
                     return;
                 }
 
@@ -48,19 +51,28 @@ public class App {
 
                 exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
+//
+//                exchange.getRequestHeaders().set(HttpHeaders.CONTENT_TYPE, AbstractRemoteDataEncoderCodec.CONTENT_TYPE_APPLICATION_JSON);
+//
+//
+//                OutputStream os = exchange.getResponseBody();
+//                try (OutputStreamWriter out = new OutputStreamWriter(os)) {
+//                    AbstractRemoteDataEncoderCodec.JSON_PRINTER.appendTo(
+//                            Payloads.newBuilder().addAllPayloads(outgoingPayloadsList).build(), out);
+//                }
+//                os.close();
 
-
-                exchange.getRequestHeaders().set(HttpHeaders.CONTENT_TYPE, AbstractRemoteDataEncoderCodec.CONTENT_TYPE_APPLICATION_JSON);
 
 
                 OutputStream os = exchange.getResponseBody();
                 try (OutputStreamWriter out = new OutputStreamWriter(os)) {
+                    Payloads build = Payloads.newBuilder().addAllPayloads(outgoingPayloadsList).build();
+                    exchange.sendResponseHeaders(200, build.toByteArray().length);
                     AbstractRemoteDataEncoderCodec.JSON_PRINTER.appendTo(
-                            Payloads.newBuilder().addAllPayloads(outgoingPayloadsList).build(), out);
+                            build, out);
                 }
-
-
                 os.close();
+
 
             } catch (Exception e) {
                 e.printStackTrace();
