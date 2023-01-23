@@ -27,6 +27,7 @@ import io.temporal.client.WorkflowClientOptions;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.common.converter.CodecDataConverter;
 import io.temporal.common.converter.DefaultDataConverter;
+import io.temporal.payload.codec.CryptCodec;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;

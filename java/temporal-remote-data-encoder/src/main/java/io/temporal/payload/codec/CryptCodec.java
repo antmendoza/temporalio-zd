@@ -17,7 +17,7 @@
  *  permissions and limitations under the License.
  */
 
-package com.antmendoza.workflow;
+package io.temporal.payload.codec;
 
 import com.google.protobuf.ByteString;
 import io.temporal.api.common.v1.Payload;

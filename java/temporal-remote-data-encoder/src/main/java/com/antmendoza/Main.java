@@ -1,6 +1,6 @@
 package com.antmendoza;
 
-import com.antmendoza.workflow.CryptCodec;
+import io.temporal.payload.codec.CryptCodec;
 import io.temporal.rde.httpserver.RDEHttpServer;
 
 import java.io.IOException;
