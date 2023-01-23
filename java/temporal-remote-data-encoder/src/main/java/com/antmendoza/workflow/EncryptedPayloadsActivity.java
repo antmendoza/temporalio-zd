@@ -118,7 +118,7 @@ public class EncryptedPayloadsActivity {
         client.newWorkflowStub(
             GreetingWorkflow.class,
             WorkflowOptions.newBuilder()
-                .setWorkflowId("java-crypt-1")
+                .setWorkflowId("EncryptedPayloadsActivity")
                 .setTaskQueue(TASK_QUEUE)
                 .build());
     // Execute a workflow waiting for it to complete. See {@link
